@@ -1,50 +1,15 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@import "tailwindcss";
+
+.wallet-adapter-button {
+  @apply !bg-black !text-white !text-xs !py-1.5 !px-3 !rounded !font-normal !border !border-gray-700 hover:!bg-gray-900 hover:!border-blue-500 !transition-all !duration-200 !h-auto !min-h-0;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.wallet-adapter-button:not([disabled]):hover {
+  @apply !bg-gray-900 !border-blue-500 !text-blue-400;
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.imgDark {
-  display: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-
-  .imgLight {
-    display: none;
-  }
-  .imgDark {
-    display: unset;
-  }
+.wallet-adapter-button[disabled] {
+  @apply !opacity-50;
 }
