@@ -12,23 +12,23 @@ import { useState } from 'react';
 export default function Home () {
   const [activeSection, setActiveSection] = useState<string>('dashboard');
     return (
-        <ConnectionProvider endpoint={"https://solana-devnet.g.alchemy.com/v2/KfFwp2SomNDKNSKVMPSvN"}>
-            <WalletProvider wallets={[]} autoConnect>
-                <WalletModalProvider>
-                  <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-blue-950 text-white">
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/90 to-blue-950/20"></div>
-                    <div className="relative z-10">
-                      <Header/>
-                      <div className="flex">
-                        <SideBar activeSection={activeSection} setActiveSection={setActiveSection} />
-                        <main className="flex-1 p-3 md:p-4 ml-56">
-                          <Dashboard activeSection={activeSection} />
-                        </main>
-                      </div>
+      <ConnectionProvider endpoint={"https://api.devnet.solana.com"}>
+          <WalletProvider wallets={[]} autoConnect>
+              <WalletModalProvider>
+                <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-blue-950 text-white">
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/90 to-blue-950/20"></div>
+                  <div className="relative z-10">
+                    <Header/>
+                    <div className="flex">
+                      <SideBar activeSection={activeSection} setActiveSection={setActiveSection} />
+                      <main className="flex-1 p-3 md:p-4 ml-56">
+                        <Dashboard activeSection={activeSection} />
+                      </main>
                     </div>
                   </div>
-                </WalletModalProvider>
-            </WalletProvider>
-        </ConnectionProvider>
+                </div>
+              </WalletModalProvider>
+          </WalletProvider>
+      </ConnectionProvider>
     );
 }

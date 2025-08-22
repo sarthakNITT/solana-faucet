@@ -2,18 +2,31 @@ import { Button } from "@repo/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
 import { Textarea } from "@repo/ui/textarea";
 import { useState } from "react";
+import { ed25519 } from '@noble/curves/ed25519';
 import { 
   Copy,
   CheckCircle
 } from 'lucide-react';
+import { useWallet } from "@solana/wallet-adapter-react";
+import bs58 from 'bs58';
 
 export default function SignSection () {
-    const [copied, setCopied] = useState(false);
-    const [signedMessage, setSignedMessage] = useState('');
+  const wallet = useWallet();
+  const [copied, setCopied] = useState(false);
+  const [signedMessage, setSignedMessage] = useState('');
+  const [messageToSign, setMessageToSign] = useState('');
 
+  async function handleSignMessage () {
+    if (!wallet.publicKey) throw new Error('Wallet not connected!');
+    if (!wallet.signMessage) throw new Error('Wallet does not support message signing!');
+    const encodedMessage = new TextEncoder().encode(messageToSign);
+    const signature = await wallet.signMessage(encodedMessage);
+    if (!ed25519.verify(signature, encodedMessage, wallet.publicKey.toBytes())) throw new Error('Message signature invalid!');
+    alert('success '+`Message signature: ${bs58.encode(signature)}`);
+  }
     return (
         <Card className="bg-black/30 backdrop-blur-sm border-gray-800 max-w-lg">
-            <CardHeader>
+            <CardHeader className="flex flex-col">
               <CardTitle className="text-white text-sm flex items-center">
                 Sign Message
               </CardTitle>
@@ -24,13 +37,13 @@ export default function SignSection () {
             <CardContent className="space-y-3">
               <Textarea
                 placeholder="Enter message to sign..."
-                // value={messageToSign}
-                // onChange={(e) => setMessageToSign(e.target.value)}
-                className="bg-black/50 border-gray-700 text-white text-xs min-h-[80px] resize-none"
+                value={messageToSign}
+                onChange={(e) => setMessageToSign(e.target.value)}
+                className="bg-black/50 p-2 border-gray-700 text-white text-xs min-h-[80px] resize-none"
               />
               <Button 
-                // onClick={handleSignMessage}
-                className="bg-black border border-gray-700 text-white text-xs py-2 h-8 hover:bg-gray-900 hover:border-blue-500 hover:text-blue-400 transition-all duration-200"
+                onClick={handleSignMessage}
+                className="w-full bg-black border border-gray-700 text-white text-xs py-2 h-8 hover:bg-gray-900 hover:border-blue-500 hover:text-blue-400 transition-all duration-200"
               >
                 Sign Message
               </Button>

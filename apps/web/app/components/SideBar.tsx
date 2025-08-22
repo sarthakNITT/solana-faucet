@@ -1,6 +1,5 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import { 
-  Home, 
   Send, 
   FileText, 
   Gift,
@@ -16,7 +15,6 @@ export default function SideBar ({ activeSection, setActiveSection }: SidebarPro
     const wallet = useWallet();
 
     const menuItems = [
-        { id: 'dashboard', label: 'Dashboard', icon: Home },
         { id: 'balance', label: 'Balance', icon: Wallet },
         { id: 'airdrop', label: 'Airdrop SOL', icon: Gift },
         { id: 'send', label: 'Send Tokens', icon: Send },

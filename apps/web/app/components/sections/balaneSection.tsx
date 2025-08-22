@@ -1,25 +1,36 @@
 import { Button } from "@repo/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { useState } from "react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useEffect, useState } from "react";
 import { 
   Copy,
   CheckCircle
 } from 'lucide-react';
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 export default function BalanceSection () {
     const wallet = useWallet()
+    const { connection } = useConnection();
     const [balance, setBalance] = useState<number>(0);
     const [copied, setCopied] = useState(false);
+
+    useEffect(()=>{
+        if(wallet.publicKey){
+            connection.getBalance(wallet.publicKey).then((e)=>{
+                setBalance(e / LAMPORTS_PER_SOL);
+            })
+        }
+    }, [wallet.publicKey, connection])
 
     const copyToClipboard = (text: string) => {
         navigator.clipboard.writeText(text);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
-    };    
+    };
+
     return (
         <Card className="bg-black/30 backdrop-blur-sm border-gray-800 max-w-lg">
-            <CardHeader>
+            <CardHeader className="flex flex-col">
                 <CardTitle className="text-white text-sm flex items-center">
                 Wallet Balance Details
                 </CardTitle>

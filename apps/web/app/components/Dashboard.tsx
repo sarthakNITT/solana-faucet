@@ -1,7 +1,6 @@
 import { useWallet } from "@solana/wallet-adapter-react"
 import { Card, CardContent } from "@repo/ui/card"
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import DashboardSection from "./sections/dashboard";
 import AirdropSection from "./sections/airdropSection";
 import SignSection from "./sections/signSection";
 import BalanceSection from "./sections/balaneSection";
@@ -15,9 +14,7 @@ export default function Dashboard ({ activeSection }: DashboardProps) {
     const wallet = useWallet();
 
     function Show () {
-        if(activeSection === "dashboard") {
-            return <DashboardSection activeSection={activeSection} />;
-        }else if(activeSection === "sign") {
+        if(activeSection === "sign") {
             return <SignSection />;
         }else if(activeSection === "airdrop") {
             return <AirdropSection/>
